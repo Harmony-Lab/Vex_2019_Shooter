@@ -1,0 +1,88 @@
+#include "robot-config.h"
+      
+
+int main() {
+    int ButtonSpeed = 17;
+    int MotorSpeed = 25;
+    float SpeedPercent = 0.3;
+    float WheelSpeed = 0.4;
+    float SpeedBoast = 0.4;
+    while(1) {
+
+        if(Controller1.ButtonA.pressing()) {
+            WheelSpeed = 1.0;
+            SpeedBoast = 2.0;
+        }
+        else{
+            WheelSpeed = 0.4;
+            SpeedBoast = 0.4;
+        }
+            
+        if (Controller1.ButtonDown.pressing())  {
+            LeftFrontMotor.spin(vex::directionType::fwd, 55*SpeedBoast, vex::velocityUnits::pct);
+            LeftRearMotor.spin(vex::directionType::fwd, 55*SpeedBoast, vex::velocityUnits::pct);
+            RightFrontMotor.spin(vex::directionType::rev, 55*SpeedBoast, vex::velocityUnits::pct);
+            RightRearMotor.spin(vex::directionType::rev, 55*SpeedBoast, vex::velocityUnits::pct);
+        } 
+         
+        else if(Controller1.ButtonUp.pressing()) {
+            LeftFrontMotor.spin(vex::directionType::rev,  55*SpeedBoast, vex::velocityUnits::pct);
+            LeftRearMotor.spin(vex::directionType::rev,  55*SpeedBoast, vex::velocityUnits::pct);
+            RightFrontMotor.spin(vex::directionType::fwd,  55*SpeedBoast, vex::velocityUnits::pct);
+            RightRearMotor.spin(vex::directionType::fwd,  55*SpeedBoast, vex::velocityUnits::pct);
+        }
+        else if(Controller1.ButtonRight.pressing()){
+            LeftFrontMotor.spin(directionType::fwd, ButtonSpeed, velocityUnits::pct);
+            RightFrontMotor.spin(directionType::fwd, ButtonSpeed+7, velocityUnits::pct);
+            LeftRearMotor.spin(directionType::rev, ButtonSpeed, velocityUnits::pct);
+            RightRearMotor.spin(directionType::rev, ButtonSpeed, velocityUnits::pct);
+        }
+        else {
+            LeftFrontMotor.spin(vex::directionType::rev, (Controller1.Axis4.value() + Controller1.Axis3.value())/2*WheelSpeed, vex::velocityUnits::pct);
+            RightFrontMotor.spin(vex::directionType::rev, (Controller1.Axis3.value() - Controller1.Axis4.value())/2*WheelSpeed, vex::velocityUnits::pct);
+            LeftRearMotor.spin(vex::directionType::fwd, (Controller1.Axis4.value() + Controller1.Axis3.value())/2*WheelSpeed, vex::velocityUnits::pct); 
+            RightRearMotor.spin(vex::directionType::fwd, (Controller1.Axis3.value() - Controller1.Axis4.value())/2*WheelSpeed, vex::velocityUnits::pct);
+        }
+        
+            
+        
+        if(Controller1.ButtonL1.pressing()) {
+            SlideMotor.spin(vex::directionType::fwd, Controller1.Axis2.value() * SpeedPercent, vex::velocityUnits::pct);
+        } else{
+            SlideMotor.stop(brakeType::hold);
+        }
+        
+        if(Controller1.ButtonL2.pressing()) {
+            LiftMotor2.spin(vex::directionType::fwd, Controller1.Axis2.value() * (SpeedPercent/2), vex::velocityUnits::pct);
+            LiftMotor.spin(vex::directionType::fwd, Controller1.Axis2.value() * (SpeedPercent/2), vex::velocityUnits::pct);
+        } else{
+            LiftMotor2.stop(brakeType::hold);
+            LiftMotor.stop(brakeType::hold);
+        }
+        
+        
+        if(Controller1.ButtonR1.pressing()) {
+           TiltMotor.spin(directionType::fwd, MotorSpeed, velocityUnits::pct);
+        } else if(Controller1.ButtonR2.pressing()) {
+             TiltMotor.spin(directionType::rev, MotorSpeed,velocityUnits::pct);
+        } else{
+            TiltMotor.stop(brakeType::hold);
+        }
+        
+        if(Controller1.ButtonB.pressing()) {
+           OpenMotor.spin(directionType::fwd, MotorSpeed, velocityUnits::pct);
+        } else if(Controller1.ButtonX.pressing()) {
+             OpenMotor.spin(directionType::rev, MotorSpeed,velocityUnits::pct);
+        } else{
+            OpenMotor.stop(brakeType::hold);
+              }
+        if(Controller1.ButtonY.pressing()){
+            LiftMotor.stop(brakeType::coast);
+            LiftMotor2.stop(brakeType::coast);
+            TiltMotor.stop(brakeType::coast);
+        }
+        
+       
+
+    }
+}
